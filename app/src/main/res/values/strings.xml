@@ -175,6 +175,7 @@
     <string name="undo">Undo</string>
     <string name="file_deleted">File deleted</string>
     <string name="play_all">Play All</string>
+    <string name="enqueue_method">Enqueue …</string>
     <string name="always">Always</string>
     <string name="just_once">Just Once</string>
     <string name="file">File</string>

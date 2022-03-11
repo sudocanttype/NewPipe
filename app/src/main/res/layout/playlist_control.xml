@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="@string/play_all"
+            android:text="@string/enqueue_method"
             android:textColor="?attr/colorAccent"
             android:textSize="@dimen/channel_rss_title_size" />
     </LinearLayout>

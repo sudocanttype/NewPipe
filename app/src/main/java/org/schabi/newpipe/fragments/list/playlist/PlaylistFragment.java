@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -326,8 +328,12 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getPlaylistBookmarkSubscriber());
 
-        playlistControlBinding.playlistCtrlPlayAllButton.setOnClickListener(view ->
-                NavigationHelper.playOnMainPlayer(activity, getPlayQueue()));
+        playlistControlBinding.playlistCtrlPlayAllButton.setOnClickListener(view -> 
+                openEnqueueMethods();
+                );
+        //the play all button IS THE ENQUEUE METHOD BUTTON NOW
+        //what tf is playlistControlBinding??????
+        //why does it just return an error when i try to trace it???
         playlistControlBinding.playlistCtrlPlayPopupButton.setOnClickListener(view ->
                 NavigationHelper.playOnPopupPlayer(activity, getPlayQueue(), false));
         playlistControlBinding.playlistCtrlPlayBgButton.setOnClickListener(view ->
@@ -364,6 +370,7 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
         );
     }
 
+
     private PlayQueue getRandomPlayQueue() {
         final List<StreamInfoItem> infoItems = new ArrayList<>();
         final List<InfoItem> processingList = infoListAdapter.getItemsList();
@@ -387,6 +394,80 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
         );
     }
 
+    private PlayQueue getReversedPlayQueue(final int index) {
+        final List<StreamInfoItem> infoItems = new ArrayList<>();
+        final List<InfoItem> processingList = infoListAdapter.getItemsList();
+        //find the final value of index
+        final int middle = processingList.size() / 2;
+        final int indexAfterSwitch;
+        if (processingList.size() % 2 != 0) {
+            indexAfterSwitch = 2 * middle - index;
+            //idk math or something
+        } else {
+            indexAfterSwitch = 2 * middle + 1 - index;
+        }
+        //simple list inversion
+        for (int i = processingList.size() - 1; i > -1; i--) {
+            final Object target = processingList.get(i);
+            if (target instanceof StreamInfoItem) {
+                infoItems.add((StreamInfoItem) target);
+            }
+        }
+        return new PlaylistPlayQueue(
+                currentInfo.getServiceId(),
+                currentInfo.getUrl(),
+                currentInfo.getNextPage(),
+                infoItems,
+                indexAfterSwitch
+        );
+    }
+    //I was considering using a dialog but nooooooope too complex
+    private void openEnqueueMethods(final ViewGroup container) {
+        // getLayoutInflater().inflate(R.layout.method_selection_dialog, container);
+        final String[] buttons = {
+                    "All",
+                    "Shuffle",
+                    "None",
+                    "Only Next Videos",
+                    "Only Previous Videos",
+                    "Continue To Next Videos",
+                    "Continue To Previous Videos"
+                    };
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("hi")
+            .setItems(buttons, new DialogInterface.OnClickListener() {
+            public void onClick(final DialogInterface dialog, final int num) {
+                switch (num) {
+                    case 0:
+                        NavigationHelper.enqueueOnPlayer(activity,
+                                getPlayQueue(),
+                                PlayerType.AUDIO);
+                        break;
+                    case 1:
+                        NavigationHelper.enqueueOnPlayer(activity,
+                                getRandomPlayQueue(),
+                                PlayerType.AUDIO);
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
     /*//////////////////////////////////////////////////////////////////////////
     // Utils
     //////////////////////////////////////////////////////////////////////////*/
