@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupWindow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.content.ContextCompat;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.widget.RelativeLayout;
 
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -62,6 +64,7 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -328,8 +331,8 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(getPlaylistBookmarkSubscriber());
 
-        playlistControlBinding.playlistCtrlPlayAllButton.setOnClickListener(view -> 
-                openEnqueueMethods();
+        playlistControlBinding.playlistCtrlPlayAllButton.setOnClickListener(view ->
+                openEnqueueMethods()
                 );
         //the play all button IS THE ENQUEUE METHOD BUTTON NOW
         //what tf is playlistControlBinding??????
@@ -422,20 +425,21 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
         );
     }
     //I was considering using a dialog but nooooooope too complex
-    private void openEnqueueMethods(final ViewGroup container) {
-        // getLayoutInflater().inflate(R.layout.method_selection_dialog, container);
+    private void openEnqueueMethods() {
+
         final String[] buttons = {
-                    "All",
-                    "Shuffle",
-                    "None",
-                    "Only Next Videos",
-                    "Only Previous Videos",
-                    "Continue To Next Videos",
-                    "Continue To Previous Videos"
+                    getString(R.string.enqueue_method_all),
+                    getString(R.string.notification_action_shuffle),
+                    getString(R.string.minimize_on_exit_none_description),
+                    getString(R.string.enqueue_method_only_next),
+                    getString(R.string.enqueue_method_only_prev),
+                    getString(R.string.enqueue_method_cont_next),
+                    getString(R.string.enqueue_method_cont_prev),
                     };
+        //there is probably a better way to get this type of usage 
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("hi")
+        builder.setTitle(R.string.enqueue_stream)
             .setItems(buttons, new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, final int num) {
                 switch (num) {
@@ -450,6 +454,13 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
                                 PlayerType.AUDIO);
                         break;
                     case 2:
+                        final LayoutInflater inflater = getLayoutInflater();
+                        final RecyclerView view = (RecyclerView) getActivity()
+                                .findViewById(R.id.items_list);
+                        final PopupWindow popupWindow = new PopupWindow(view,
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                RelativeLayout.LayoutParams.MATCH_PARENT,
+                                true);
                         break;
                     case 3:
                         break;
