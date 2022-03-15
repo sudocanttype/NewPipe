@@ -426,7 +426,7 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
 
         final String[] buttons = {
                     getString(R.string.enqueue_method_all),
-                    getString(R.string.notification_action_shuffle),
+                    getString(R.string.enqueue_method_shuffle),
                     // getString(R.string.enqueue_method_only_next),
                     // getString(R.string.enqueue_method_only_prev),
                     // getString(R.string.enqueue_method_cont_next),
@@ -442,21 +442,15 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
                     case 0:
                         NavigationHelper.enqueueOnPlayer(activity,
                                 getPlayQueue(),
-                                PlayerType.AUDIO);
+                                PlayerType.VIDEO);
                         break;
                     case 1:
                         NavigationHelper.enqueueOnPlayer(activity,
                                 getRandomPlayQueue(),
-                                PlayerType.AUDIO);
+                                PlayerType.VIDEO);
                         break;
                     case 2:
-                        final LayoutInflater inflater = getLayoutInflater();
-                        final RecyclerView view = (RecyclerView) getActivity()
-                                .findViewById(R.id.items_list);
-                        final PopupWindow popupWindow = new PopupWindow(view,
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                RelativeLayout.LayoutParams.MATCH_PARENT,
-                                true);
+                        //I have no idea how to pull up another selection screen.
                         break;
                     case 3:
                         break;
