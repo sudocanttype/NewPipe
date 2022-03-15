@@ -245,9 +245,6 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
             case R.id.menu_item_bookmark:
                 onBookmarkClicked();
                 break;
-            case R.id.menu_item_shufflePlay:
-                onShuffleClicked();
-                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -430,13 +427,12 @@ public class PlaylistFragment extends BaseListInfoFragment<StreamInfoItem, Playl
         final String[] buttons = {
                     getString(R.string.enqueue_method_all),
                     getString(R.string.notification_action_shuffle),
-                    getString(R.string.minimize_on_exit_none_description),
-                    getString(R.string.enqueue_method_only_next),
-                    getString(R.string.enqueue_method_only_prev),
-                    getString(R.string.enqueue_method_cont_next),
-                    getString(R.string.enqueue_method_cont_prev),
+                    // getString(R.string.enqueue_method_only_next),
+                    // getString(R.string.enqueue_method_only_prev),
+                    // getString(R.string.enqueue_method_cont_next),
+                    // getString(R.string.enqueue_method_cont_prev),
                     };
-        //there is probably a better way to get this type of usage 
+        //there is probably a better way to get this type of usage
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.enqueue_stream)
